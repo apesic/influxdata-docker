@@ -1,7 +1,7 @@
 FROM buildpack-deps:buster-curl
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
-    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends iputils-ping snmp procps lm-sensors && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends iputils-ping snmp procps lm-sensors python3-pip && \
     rm -rf /var/lib/apt/lists/*
 
 RUN set -ex && \
@@ -14,6 +14,8 @@ RUN set -ex && \
     done
 
 ENV TELEGRAF_VERSION 1.15.2
+RUN pip3 install speedtest-cli
+
 RUN ARCH= && dpkgArch="$(dpkg --print-architecture)" && \
     case "${dpkgArch##*-}" in \
       amd64) ARCH='amd64';; \
